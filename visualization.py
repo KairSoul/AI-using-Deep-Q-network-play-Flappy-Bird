@@ -1,4 +1,4 @@
-# visualize_csv.py
+# visualization.py
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 def draw_from_csv(csv_path="train_log.csv"):
     # Check if the CSV log file exists
     if not os.path.exists(csv_path):
-        print(f"Error: Log file '{csv_path}' not found. Run game.py in AI mode first!")
+        print(f"Error: Log file '{csv_path}' not found. Run game.py or train.py in AI mode first!")
         return
 
     # Read data from the CSV file using pandas
@@ -46,12 +46,12 @@ def draw_from_csv(csv_path="train_log.csv"):
     ax1.legend(loc='upper left')
 
     # --- RIGHT CHART: EXPLORATION RATE DECAY ---
-    # Plot the Epsilon decay rate over the exact same timeline
-    ax2.plot(x_axis, df['Epsilon'], color='#1f77b4', linewidth=2, label='Epsilon ($\epsilon$)')
+    # Added 'r' prefix here to completely fix the syntax invalid escape sequence warning
+    ax2.plot(x_axis, df['Epsilon'], color='#1f77b4', linewidth=2, label=r'Epsilon ($\epsilon$)')
     
     ax2.set_xlabel('Total Steps')
     ax2.set_ylabel('Epsilon Value')
-    ax2.set_title('Exploration Rate ($\epsilon$ Decay)')
+    ax2.set_title(r'Exploration Rate ($\epsilon$ Decay)')
     ax2.grid(True, linestyle='--', alpha=0.5)
     ax2.legend(loc='upper right')
 
