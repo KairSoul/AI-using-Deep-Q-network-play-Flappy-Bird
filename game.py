@@ -1,5 +1,6 @@
 import os
 import random
+import csv
 
 import numpy as np
 import pygame
@@ -11,6 +12,15 @@ from agent import DQNAgent
 
 pygame.init()
 
+# Initialize CSV log file for Game/Train Mode
+log_file = "train_log.csv"
+if not os.path.exists(log_file):
+    with open(log_file, mode='w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        # Write the headers for the columns
+        writer.writerow(['Episode', 'Score', 'Steps', 'Epsilon'])
+
+#seting fps
 clock = pygame.time.Clock()
 fps = 60
 
@@ -220,6 +230,8 @@ button_manual = Button(s_width // 2 - 70 , s_height // 2 - 100, manual_img)
 button_ai = Button(s_width // 2 - 70 , s_height // 2 + 20, ai_img)
 menu_button = Button(10, 10, menu_img)
 
+# Create a temporary buffer list in RAM to store AI match data
+ai_lifecycle_buffer = []
 
 run = True
 while run:
@@ -322,7 +334,7 @@ while run:
                 flappy.index = (flappy.index + 1) % len(flappy.images)
             flappy.image = pygame.transform.rotate(flappy.images[flappy.index], -flappy.velocity * 2)
             
-            # SỬA TẠI ĐÂY: Ép vẽ cả ỐNG và CHIM hiển thị đồng thời khi AI chơi
+            #Ép vẽ cả ỐNG và CHIM hiển thị đồng thời khi AI chơi
             pipe_group.draw(screen)
             bird_group.draw(screen)
             
@@ -418,6 +430,12 @@ while run:
             if score > max_score:
                 max_score = score
             print(f"--- TRẬN {episode_count} | Score: {score} (Max: {max_score}) | Epsilon: {agent.epsilon:.4f}")
+
+            #add data csv
+            with open(log_file, mode='a', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                writer.writerow([episode_count, score, step_count, agent.epsilon])
+
             if episode_count % 10 == 0:
                 agent.save("flappy_dqn.pt")
 

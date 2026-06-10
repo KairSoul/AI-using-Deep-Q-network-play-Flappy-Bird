@@ -12,7 +12,7 @@ class DQNAgent:
         self,
         state_size,
         action_size=2,
-        learning_rate=0.0003,  # CẤU HÌNH TIÊU CHUẨN: Giúp mạng hội tụ không bị trồi sụt Loss
+        learning_rate=0.0003,  
         gamma=0.99,
         epsilon=1.0,
         epsilon_min=0.01,
